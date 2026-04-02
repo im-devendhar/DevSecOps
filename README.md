@@ -355,12 +355,135 @@ jobs:
 
 ---
 
-# Final Key Points
 
-* Integrate security early (shift-left)
-* Automate security checks in CI/CD
-* Use severity-based gating
-* Follow fail-fast principle
-* Balance security with delivery speed
+## Secure-by-Design in SDLC (Q&A)
+
+---
+
+## 1. What is secure-by-design in SDLC?
+
+**Answer:**
+
+Secure-by-design means integrating security practices from the beginning of the Software Development Life Cycle instead of adding them at the end. It includes defining security requirements, performing threat modeling during design, enforcing secure coding practices, and automating security testing in CI/CD pipelines.
+
+---
+
+## 2. How do you embed security into each phase of SDLC?
+
+**Answer:**
+
+In the requirement phase, I define security requirements such as authentication, authorization, and encryption.
+In the design phase, I perform threat modeling using tools like Microsoft Threat Modeling Tool.
+During development, I enforce secure coding practices and use SAST tools.
+In testing, I integrate SAST, DAST, and SCA scans.
+In deployment, I ensure secure configurations and proper secrets management.
+
+---
+
+## 3. How do you collaborate with developers to improve security?
+
+**Answer:**
+
+I collaborate by integrating security tools directly into the developer workflow, providing secure coding guidelines, and conducting awareness sessions. I also ensure developers receive early feedback through CI/CD pipelines so they can fix issues quickly.
+
+---
+
+## 4. Developers say security slows down development. How do you handle it?
+
+**Answer:**
+
+I automate security checks in CI/CD pipelines and set severity thresholds so only critical issues block builds. I also shift security earlier in the process to reduce rework and provide faster feedback.
+
+---
+
+## 5. What is threat modeling and why is it important?
+
+**Answer:**
+
+Threat modeling is the process of identifying potential security threats during the design phase. It helps proactively address vulnerabilities before development begins, reducing both risk and cost.
+
+---
+
+## 6. What is STRIDE?
+
+**Answer:**
+
+STRIDE is a threat modeling framework that stands for Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, and Elevation of Privilege. It is used to categorize and identify potential threats in a system.
+
+---
+
+## 7. How do you ensure developers follow secure coding practices?
+
+**Answer:**
+
+I provide secure coding standards, enforce code reviews, and integrate tools like SonarQube into CI pipelines to detect vulnerabilities early.
+
+---
+
+## 8. How do you manage secrets securely?
+
+**Answer:**
+
+I avoid hardcoding secrets in source code and use secure storage solutions like HashiCorp Vault. Secrets are injected at runtime and rotated regularly.
+
+---
+
+## 9. How do you collaborate with platform or DevOps teams?
+
+**Answer:**
+
+I work with platform teams to secure CI/CD pipelines, enforce Infrastructure-as-Code security practices, implement proper access controls, and ensure monitoring and logging are in place.
+
+---
+
+## 10. Scenario: A team is not following security practices. What will you do?
+
+**Answer:**
+
+I first identify the challenges faced by the team, then provide training and simplify security processes. I introduce automated checks and make security part of the Definition of Done to ensure compliance.
+
+---
+
+## 11. Scenario: No security exists in SDLC. How will you start?
+
+**Answer:**
+
+I begin with a risk assessment, then introduce SAST and SCA into CI/CD pipelines. I implement threat modeling in the design phase and gradually enforce policies and automation without disrupting development speed.
+
+---
+
+## 12. What are security gates in CI/CD?
+
+**Answer:**
+
+Security gates are checkpoints in the pipeline where builds fail if vulnerabilities exceed a defined severity threshold. This ensures that only secure code progresses to deployment.
+
+---
+
+## 13. What is Definition of Done with security?
+
+**Answer:**
+
+It means a feature is considered complete only after passing all security checks, including code scans, dependency checks, and adherence to secure coding standards.
+
+---
+
+## 14. How do you balance security and speed?
+
+**Answer:**
+
+By automating security processes, shifting security earlier in the lifecycle, running scans in parallel, and focusing on high-risk vulnerabilities, I ensure strong security without slowing down delivery.
+
+---
+
+## 15. Explain how you implemented secure SDLC in a project
+
+**Answer:**
+
+In my project, I integrated SAST and SCA tools into CI/CD pipelines, conducted threat modeling during the design phase, enforced secure coding practices, and implemented container scanning before deployment. I collaborated with developers through regular feedback and training, ensuring security became an integral part of the development lifecycle.
+
+---
+
+
 
 ---
