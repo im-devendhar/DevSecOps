@@ -835,4 +835,197 @@ Patch management is the process of applying updates to software or systems to fi
 
 In a real-world workflow, vulnerabilities are detected using automated scanning tools integrated into CI/CD pipelines and cloud monitoring systems. They are prioritized based on severity and business impact, assigned to relevant teams, fixed through patches or code changes, and verified through re-scanning. Continuous monitoring ensures new vulnerabilities are identified and addressed promptly.
 
+## Artifact Repositories, Container Registries, and Scanning Platforms (Q&A)
+
+---
+
+## 1. What is an artifact repository?
+
+**Answer:**
+
+An artifact repository is a storage system used to manage and store build artifacts such as binaries, libraries, and packages. It ensures version control, traceability, and secure distribution of artifacts.
+
+---
+
+## 2. What are common artifact repository tools?
+
+**Answer:**
+
+- Nexus Repository  
+- JFrog Artifactory  
+- AWS CodeArtifact  
+
+---
+
+## 3. What is a container registry?
+
+**Answer:**
+
+A container registry is a service used to store, manage, and distribute container images. It allows teams to version, scan, and securely access Docker images.
+
+---
+
+## 4. What are common container registries?
+
+**Answer:**
+
+- Docker Hub  
+- AWS Elastic Container Registry (ECR)  
+- Azure Container Registry (ACR)  
+- Google Container Registry (GCR)  
+
+---
+
+## 5. How do you secure an artifact repository?
+
+**Answer:**
+
+- Enable authentication and role-based access control (RBAC)  
+- Enforce least privilege access  
+- Scan artifacts for vulnerabilities  
+- Enable audit logging and monitoring  
+- Use HTTPS for secure communication  
+
+---
+
+## 6. How do you secure container registries?
+
+**Answer:**
+
+- Restrict access using IAM/RBAC  
+- Enable image scanning for vulnerabilities  
+- Use private repositories instead of public  
+- Enforce image signing and verification  
+- Regularly remove unused or outdated images  
+
+---
+
+## 7. What is image scanning?
+
+**Answer:**
+
+Image scanning is the process of analyzing container images for vulnerabilities, outdated packages, and misconfigurations before deployment.
+
+---
+
+## 8. What tools are used for container/image scanning?
+
+**Answer:**
+
+- Trivy  
+- Clair  
+- Anchore  
+
+---
+
+## 9. How do you integrate scanning platforms into CI/CD?
+
+**Answer:**
+
+- Add scanning stages in the pipeline after build  
+- Scan artifacts and container images before pushing to registry  
+- Fail builds if critical vulnerabilities are found  
+- Generate reports for developers  
+
+---
+
+## 10. What is artifact versioning and why is it important?
+
+**Answer:**
+
+Artifact versioning ensures each build is uniquely identifiable. It helps track changes, roll back to previous versions, and maintain consistency across environments.
+
+---
+
+## 11. What is immutability in artifact repositories?
+
+**Answer:**
+
+Immutability means once an artifact or image is stored, it cannot be modified. This ensures integrity and prevents tampering.
+
+---
+
+## 12. How do you manage access to artifact repositories and registries?
+
+**Answer:**
+
+- Use role-based access control (RBAC)  
+- Enforce least privilege principle  
+- Integrate with identity providers (IAM/SSO)  
+- Rotate credentials regularly  
+
+---
+
+## 13. How do you handle vulnerabilities in stored artifacts or images?
+
+**Answer:**
+
+- Continuously scan artifacts and images  
+- Identify vulnerable versions  
+- Rebuild with updated dependencies  
+- Replace old versions in registry  
+- Notify teams for remediation  
+
+---
+
+## 14. What is retention policy in repositories?
+
+**Answer:**
+
+Retention policy defines how long artifacts or images are stored before being deleted. It helps manage storage and remove outdated or unused artifacts.
+
+---
+
+## 15. Scenario: A vulnerable image is found in the container registry. What will you do?
+
+**Answer:**
+
+- Identify affected image versions  
+- Prevent further usage (block or deprecate)  
+- Fix vulnerabilities and rebuild image  
+- Push updated image to registry  
+- Update deployments  
+
+---
+
+## 16. Scenario: Unauthorized access to artifact repository is detected. What will you do?
+
+**Answer:**
+
+- Revoke access immediately  
+- Investigate logs and identify impact  
+- Rotate credentials  
+- Strengthen access controls and policies  
+
+---
+
+## 17. How do you ensure compliance in artifact repositories and registries?
+
+**Answer:**
+
+- Enforce access control policies  
+- Enable logging and auditing  
+- Integrate vulnerability scanning  
+- Follow organizational and regulatory standards  
+
+---
+
+## 18. How do you collaborate with teams while managing these tools?
+
+**Answer:**
+
+- Provide guidelines for artifact and image usage  
+- Integrate tools into CI/CD pipelines  
+- Share vulnerability reports  
+- Support teams in resolving issues  
+
+---
+
+## 19. Explain a real-world approach to managing these tools
+
+**Answer:**
+
+In a real-world setup, artifact repositories and container registries are secured with RBAC and integrated with CI/CD pipelines. All artifacts and images are scanned before storage and deployment. Policies such as immutability and retention are enforced. Continuous monitoring and collaboration with development and DevOps teams ensure secure and efficient operations.
+
+---
 ---
