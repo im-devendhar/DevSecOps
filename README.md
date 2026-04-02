@@ -485,5 +485,168 @@ In my project, I integrated SAST and SCA tools into CI/CD pipelines, conducted t
 ---
 
 
+## Infrastructure-as-Code (IaC) Security and Compliance
+
+---
+
+## 1. What is Infrastructure-as-Code (IaC)?
+
+**Answer:**
+
+Infrastructure-as-Code is the practice of provisioning and managing infrastructure using code instead of manual processes. Tools like Terraform, AWS CloudFormation, and Azure Bicep allow consistent, repeatable, and automated infrastructure deployment.
+
+---
+
+## 2. Why is security important in IaC?
+
+**Answer:**
+
+IaC templates define infrastructure configurations. If they contain misconfigurations such as open ports or excessive permissions, they can introduce vulnerabilities at scale. Securing IaC ensures infrastructure is compliant, consistent, and protected from the beginning.
+
+---
+
+## 3. What are common security risks in IaC?
+
+**Answer:**
+
+- Hardcoded secrets (API keys, passwords)  
+- Open security groups (e.g., 0.0.0.0/0)  
+- Overly permissive IAM roles  
+- Unencrypted storage (S3, databases)  
+- Lack of logging and monitoring  
+
+---
+
+## 4. How do you secure Terraform templates?
+
+**Answer:**
+
+- Avoid hardcoding secrets; use secure storage solutions  
+- Enforce least privilege IAM roles  
+- Use remote state with encryption enabled  
+- Validate configurations using tools like Checkov  
+- Perform code reviews and policy checks before deployment  
+
+---
+
+## 5. What is Terraform state and how do you secure it?
+
+**Answer:**
+
+Terraform state stores the current infrastructure configuration and may contain sensitive data. It should be secured using remote backends (e.g., S3) with encryption enabled and restricted access using IAM policies.
+
+---
+
+## 6. How do you ensure compliance in IaC?
+
+**Answer:**
+
+- Use policy-as-code tools  
+- Integrate compliance checks in CI/CD pipelines  
+- Follow standards like CIS benchmarks  
+- Validate configurations before deployment  
+
+---
+
+## 7. What is policy-as-code?
+
+**Answer:**
+
+Policy-as-code is the practice of defining and enforcing infrastructure rules using code. It ensures all deployments follow organizational security and compliance standards automatically.
+
+---
+
+## 8. How do you prevent secrets exposure in IaC?
+
+**Answer:**
+
+- Do not hardcode secrets in templates  
+- Use secret management tools like HashiCorp Vault  
+- Store secrets in environment variables or secure services  
+- Rotate secrets regularly  
+
+---
+
+## 9. How do you integrate IaC security into CI/CD pipelines?
+
+**Answer:**
+
+- Add IaC scanning tools (e.g., Checkov) in pipeline stages  
+- Enforce policy validation before deployment  
+- Fail builds if violations exceed defined thresholds  
+
+---
+
+## 10. What is least privilege in IaC?
+
+**Answer:**
+
+Least privilege means granting only the minimum permissions required for a resource or user to function, reducing the risk of misuse or compromise.
+
+---
+
+## 11. How do you handle misconfigurations in IaC?
+
+**Answer:**
+
+- Detect using automated scanning tools  
+- Fix issues in the code  
+- Enforce policies to prevent recurrence  
+- Use code reviews and CI/CD validation  
+
+---
+
+## 12. What are best practices for secure CloudFormation or Bicep templates?
+
+**Answer:**
+
+- Enable encryption for storage and databases  
+- Use IAM roles with least privilege  
+- Avoid hardcoded secrets  
+- Enable logging and monitoring  
+- Use parameterization instead of static values  
+
+---
+
+## 13. Scenario: A Terraform script exposes a public S3 bucket. What will you do?
+
+**Answer:**
+
+- Restrict public access immediately  
+- Update Terraform code to enforce private access  
+- Enable bucket policies and encryption  
+- Add validation rules to prevent future issues  
+
+---
+
+## 14. Scenario: How do you ensure all infrastructure follows security standards?
+
+**Answer:**
+
+- Implement policy-as-code  
+- Integrate IaC scanning tools in CI/CD pipelines  
+- Enforce security gates  
+- Conduct regular audits against compliance standards  
+
+---
+
+## 15. How do you collaborate with DevOps teams on IaC security?
+
+**Answer:**
+
+- Review IaC templates  
+- Integrate security tools into pipelines  
+- Provide secure configuration guidelines  
+- Automate compliance checks  
+
+---
+
+## 16. Explain a real-world approach to securing IaC
+
+**Answer:**
+
+In a real-world setup, IaC security is implemented by integrating scanning tools like Checkov into CI/CD pipelines, enforcing policies using policy-as-code tools, securely managing secrets, and ensuring all infrastructure follows least privilege and encryption standards. Continuous collaboration with development and DevOps teams ensures security is maintained throughout the lifecycle.
+
+---
 
 ---
