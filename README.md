@@ -649,4 +649,190 @@ In a real-world setup, IaC security is implemented by integrating scanning tools
 
 ---
 
+## Vulnerability Monitoring and Remediation (Cloud, Application, Containers)
+
+---
+
+## 1. What is vulnerability management?
+
+**Answer:**
+
+Vulnerability management is the continuous process of identifying, assessing, prioritizing, and remediating security vulnerabilities across systems, applications, and infrastructure.
+
+---
+
+## 2. How do you monitor vulnerabilities in cloud environments?
+
+**Answer:**
+
+- Use cloud-native security tools (e.g., AWS Security Hub, Azure Defender)  
+- Enable logging and monitoring (CloudWatch, Azure Monitor)  
+- Continuously scan resources for misconfigurations  
+- Integrate alerts with monitoring systems  
+
+---
+
+## 3. How do you monitor application vulnerabilities?
+
+**Answer:**
+
+- Use SAST tools during development  
+- Use DAST tools after deployment  
+- Perform dependency scanning (SCA)  
+- Integrate scanning into CI/CD pipelines  
+
+---
+
+## 4. How do you monitor container vulnerabilities?
+
+**Answer:**
+
+- Scan container images using tools like Trivy or Clair  
+- Monitor running containers for vulnerabilities  
+- Use secure base images  
+- Continuously update and patch images  
+
+---
+
+## 5. What is CVE?
+
+**Answer:**
+
+CVE (Common Vulnerabilities and Exposures) is a standardized identifier for publicly known security vulnerabilities.
+
+---
+
+## 6. What is CVSS?
+
+**Answer:**
+
+CVSS (Common Vulnerability Scoring System) is used to measure the severity of vulnerabilities, helping prioritize remediation efforts.
+
+---
+
+## 7. How do you prioritize vulnerabilities?
+
+**Answer:**
+
+- Based on CVSS score (Critical, High, Medium, Low)  
+- Exploitability and impact  
+- Business criticality of the affected system  
+- Exposure (public-facing vs internal)  
+
+---
+
+## 8. How do you remediate vulnerabilities in applications?
+
+**Answer:**
+
+- Fix code issues identified by SAST  
+- Update vulnerable dependencies  
+- Apply patches  
+- Retest after remediation  
+
+---
+
+## 9. How do you remediate vulnerabilities in containers?
+
+**Answer:**
+
+- Update base images  
+- Remove unnecessary packages  
+- Rebuild and redeploy images  
+- Use minimal and secure images (e.g., Alpine)  
+
+---
+
+## 10. How do you remediate vulnerabilities in cloud infrastructure?
+
+**Answer:**
+
+- Fix misconfigurations (e.g., open ports, public access)  
+- Apply patches and updates  
+- Enforce IAM least privilege  
+- Enable encryption and logging  
+
+---
+
+## 11. How do you automate vulnerability management?
+
+**Answer:**
+
+- Integrate scanning tools into CI/CD pipelines  
+- Schedule regular scans  
+- Use alerts and dashboards for monitoring  
+- Automatically fail builds for critical vulnerabilities  
+
+---
+
+## 12. What tools are used for vulnerability scanning?
+
+**Answer:**
+
+- SAST: CodeQL, SonarQube  
+- SCA: Snyk, OWASP Dependency-Check  
+- DAST: OWASP ZAP  
+- Container: Trivy, Clair  
+
+---
+
+## 13. What is patch management?
+
+**Answer:**
+
+Patch management is the process of applying updates to software or systems to fix vulnerabilities and improve security.
+
+---
+
+## 14. Scenario: A critical vulnerability is found in production. What will you do?
+
+**Answer:**
+
+- Identify severity and impact  
+- Isolate affected systems if needed  
+- Apply patch or fix immediately  
+- Rebuild and redeploy  
+- Verify and monitor  
+
+---
+
+## 15. Scenario: Too many vulnerabilities are reported. How do you handle it?
+
+**Answer:**
+
+- Prioritize based on severity and risk  
+- Focus on critical and high issues first  
+- Reduce false positives  
+- Create a remediation plan  
+
+---
+
+## 16. How do you ensure continuous security monitoring?
+
+**Answer:**
+
+- Enable real-time monitoring and alerts  
+- Integrate with SIEM tools  
+- Perform regular scans  
+- Continuously update security tools and policies  
+
+---
+
+## 17. How do you collaborate with teams for vulnerability remediation?
+
+**Answer:**
+
+- Share vulnerability reports with developers  
+- Provide clear remediation steps  
+- Track fixes through tickets  
+- Ensure timely resolution through follow-ups  
+
+---
+
+## 18. Explain a real-world vulnerability management workflow
+
+**Answer:**
+
+In a real-world workflow, vulnerabilities are detected using automated scanning tools integrated into CI/CD pipelines and cloud monitoring systems. They are prioritized based on severity and business impact, assigned to relevant teams, fixed through patches or code changes, and verified through re-scanning. Continuous monitoring ensures new vulnerabilities are identified and addressed promptly.
+
 ---
