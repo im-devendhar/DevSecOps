@@ -26,7 +26,7 @@ jobs:
         with:
           projectBaseDir: .
         env:
-          SONAR_HOST_URL: http://localhost:9000
+          SONAR_HOST_URL: http://172.31.84.127:9000
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       # ---------------- SCA ----------------
