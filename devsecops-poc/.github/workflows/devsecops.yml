@@ -1,58 +1,59 @@
 name: DevSecOps Pipeline
 
 on:
-  push:
-    branches: [ "main" ]
+push:
+branches: [ "main" ]
 
 jobs:
 devsecops:
 runs-on: self-hosted
 
 steps:
-# ---------------- Checkout ----------------
-- name: Checkout Code
-  uses: actions/checkout@v3
+  # ---------------- Checkout ----------------
+  - name: Checkout Code
+    uses: actions/checkout@v3
 
-# ---------------- SAST ----------------
-- name: SonarQube Scan
-  uses: SonarSource/sonarqube-scan-action@v2
-  with:
-    projectBaseDir: .
-  env:
-    SONAR_HOST_URL: http://localhost:9000
-    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  # ---------------- SAST ----------------
+  - name: SonarQube Scan
+    uses: SonarSource/sonarqube-scan-action@v2
+    with:
+      projectBaseDir: .
+    env:
+      SONAR_HOST_URL: http://localhost:9000
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-# ---------------- SCA ----------------
-- name: Snyk Monitor
-  run: snyk monitor
-  env:
-    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  # ---------------- SCA ----------------
+  - name: Snyk Monitor
+    run: snyk monitor
+    env:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-# ---------------- Secrets Scan ----------------
-- name: Gitleaks Scan
-  run: |
-    docker run --rm -v $(pwd):/path zricethezav/gitleaks detect \
-    --source="/path" --no-git
+  # ---------------- Secrets Scan ----------------
+  - name: Gitleaks Scan
+    run: |
+      docker run --rm -v $(pwd):/path zricethezav/gitleaks detect \
+      --source="/path" --no-git
 
-# ---------------- Build Docker ----------------
-- name: Build Docker Image
-  run: docker build -t devsecops-app .
+  # ---------------- Build Docker ----------------
+  - name: Build Docker Image
+    run: docker build -t devsecops-app .
 
-# ---------------- Trivy Scan ----------------
-- name: Trivy Scan
-  run: trivy image devsecops-app
+  # ---------------- Trivy Scan ----------------
+  - name: Trivy Scan
+    run: trivy image devsecops-app
 
-# ---------------- Run App ----------------
-- name: Run Container
-  run: docker run -d -p 3000:80 devsecops-app
+  # ---------------- Run App ----------------
+  - name: Run Container
+    run: docker run -d -p 3000:80 devsecops-app
 
-# ---------------- Wait ----------------
-- name: Wait for App
-  run: sleep 10
+  # ---------------- Wait ----------------
+  - name: Wait for App
+    run: sleep 10
 
-# ---------------- DAST ----------------
-- name: OWASP ZAP Scan
-  run: |
-    docker run --network="host" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
-    -t http://localhost:3000 \
-    -r zap-report.html
+  # ---------------- DAST ----------------
+  - name: OWASP ZAP Scan
+    run: |
+      docker run --network="host" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
+      -t http://localhost:3000 \
+      -r zap-report.html
+
