@@ -78,10 +78,12 @@ jobs:
       - name: Run OWASP ZAP Scan
         run: |
           set -euxo pipefail
-          docker run --network="host" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
+          docker run --network="host" \
+          -v $(pwd):/zap/wrk:rw \
+          ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
           -t http://localhost:${APP_PORT} \
-          -r zap-report.html
-          -I 
+          -r zap-report.html \
+          -I
 
       # ---------------- Upload Report ----------------
       - name: Upload ZAP Report
