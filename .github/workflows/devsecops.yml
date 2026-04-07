@@ -45,8 +45,9 @@ jobs:
           docker run --rm -v $(pwd):/repo zricethezav/gitleaks detect \
           --source="/repo" --no-git
 
-       - name: Cleanup old containers
-         run: docker ps -q --filter "ancestor=${APP_NAME}" | xargs -r docker rm -f
+      - name: Cleanup old containers
+        run: docker ps -q --filter "ancestor=${APP_NAME}" | xargs -r docker rm -f
+
       # ---------------- Build ----------------
       - name: Build Docker Image
         working-directory: devsecops-poc 
@@ -86,5 +87,3 @@ jobs:
         with:
           name: zap-report
           path: zap-report.html
-
-
