@@ -1,90 +1,186 @@
-# DevSecOps Pipeline Implementation for Tic Tac Toe Game
+# DevSecOps Pipeline Implementation (POC)
 
-![Screenshot 2025-03-04 at 7 16 48 PM](https://github.com/user-attachments/assets/7ed79f9c-9144-4870-accd-500085a15592)
+## 1. Project Overview
 
-![image](https://github.com/user-attachments/assets/5b2813a5-f493-4665-8964-77359b5be93a)
+This project demonstrates the implementation of a complete DevSecOps pipeline integrating security at every stage of the Software Development Life Cycle (SDLC).
 
-## Features
+The pipeline includes Static Application Security Testing (SAST), Software Composition Analysis (SCA), Secrets Scanning, Container Security, and Dynamic Application Security Testing (DAST).
 
-- 🎮 Fully functional Tic Tac Toe game
-- 📊 Score tracking for X, O, and draws
-- 📜 Game history with timestamps
-- 🏆 Highlights winning combinations
-- 🔄 Reset game and statistics
-- 📱 Responsive design for all devices
+---
 
-## Technologies Used
+## 2. Architecture Overview
 
-- React 18
-- TypeScript
-- Tailwind CSS
-- Lucide React for icons
+Code → SAST → SCA → Secrets Scan → Build → Container Scan → Deploy → DAST
 
-## Project Structure
+---
 
-```
-src/
-├── components/
-│   ├── Board.tsx       # Game board component
-│   ├── Square.tsx      # Individual square component
-│   ├── ScoreBoard.tsx  # Score tracking component
-│   └── GameHistory.tsx # Game history component
-├── utils/
-│   └── gameLogic.ts    # Game logic utilities
-├── App.tsx             # Main application component
-└── main.tsx           # Entry point
-```
+## 3. Tools Used
 
-## Game Logic
+* SonarQube – Static Code Analysis (SAST)
+* Snyk – Dependency Vulnerability Scanning (SCA)
+* Gitleaks – Secrets Detection
+* Docker – Containerization
+* Trivy – Container Image Scanning
+* OWASP ZAP – Dynamic Security Testing (DAST)
+* GitHub Actions – CI/CD Pipeline
+* AWS EC2 – Deployment Environment
 
-The game implements the following rules:
+---
 
-1. X goes first, followed by O
-2. The first player to get 3 of their marks in a row (horizontally, vertically, or diagonally) wins
-3. If all 9 squares are filled and no player has 3 marks in a row, the game is a draw
-4. Winning combinations are highlighted
-5. Game statistics are tracked and displayed
+## 4. Implementation Steps
 
-## Getting Started
+### 4.1 Source Code Setup
 
-### Prerequisites
+* Created frontend application
+* Organized project structure
+* Added configuration files (package.json, Dockerfile, sonar-project.properties)
 
-- Node.js (v14 or higher)
-- npm or yarn
+---
 
-### Installation
+### 4.2 SAST Implementation (SonarQube)
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/devsecops-demo.git
-   cd devsecops-demo
-   ```
+* Installed SonarQube on AWS EC2 using Docker
+* Created project and generated authentication token
+* Configured sonar-project.properties
+* Executed scan using sonar-scanner
 
-2. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn
-   ```
+**Outcome:**
 
-3. Start the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
+* Code quality analyzed
+* Security vulnerabilities identified (if any)
+* Quality gate evaluation performed
 
-4. Open your browser and navigate to `http://localhost:5173`
+---
 
-## Building for Production
+### 4.3 SCA Implementation (Snyk)
 
-To create a production build:
+* Installed Snyk CLI
+* Authenticated using API token
+* Executed:
 
-```bash
-npm run build
-# or
-yarn build
-```
+  * snyk test
+  * snyk monitor
 
-The build artifacts will be stored in the `dist/` directory.
+**Outcome:**
 
+* Dependency vulnerabilities analyzed
+* Project uploaded to Snyk dashboard
+* Continuous monitoring enabled
+
+---
+
+### 4.4 Secrets Scanning (Gitleaks)
+
+* Installed Gitleaks using Docker
+* Performed filesystem scan using:
+  --no-git option
+
+**Outcome:**
+
+* No hardcoded secrets detected
+* Ensured secure handling of credentials
+
+---
+
+### 4.5 Containerization (Docker)
+
+* Created Dockerfile for application
+* Built Docker image:
+  docker build -t devsecops-app .
+* Ran container:
+  docker run -p 3000:80 devsecops-app
+
+**Outcome:**
+
+* Application successfully containerized
+* Accessible via browser
+
+---
+
+### 4.6 Container Security (Trivy)
+
+* Installed Trivy
+* Scanned Docker image:
+  trivy image devsecops-app
+
+**Outcome:**
+
+* Identified vulnerabilities in base image libraries (e.g., libpng, zlib)
+* Recommended updating base image
+
+---
+
+### 4.7 Deployment (AWS EC2)
+
+* Deployed application on EC2 instance
+* Configured security groups (ports 3000, 9000)
+* Verified accessibility via public IP
+
+---
+
+### 4.8 DAST Implementation (OWASP ZAP)
+
+* Executed ZAP baseline scan using Docker
+* Generated HTML report
+
+**Findings:**
+
+* Missing security headers (CSP, X-Frame-Options, etc.)
+* Server information disclosure
+* Cache-related warnings
+
+---
+
+## 5. CI/CD Pipeline (GitHub Actions)
+
+* Created workflow file (.github/workflows/devsecops.yml)
+* Integrated:
+
+  * SonarQube scan
+  * Snyk monitor
+  * Gitleaks scan
+  * Docker build
+  * Trivy scan
+  * OWASP ZAP scan
+
+**Outcome:**
+
+* Automated security checks on every code push
+* Continuous security validation
+
+---
+
+## 6. Key Security Findings
+
+* Container vulnerabilities due to outdated base image
+* Missing HTTP security headers
+* Minor information disclosure issues
+
+---
+
+## 7. Recommendations
+
+* Use updated base images
+* Add security headers in Nginx configuration
+* Enforce pipeline failure on high/critical vulnerabilities
+* Implement HTTPS for secure communication
+
+---
+
+## 8. Conclusion
+
+This POC successfully demonstrates the integration of security practices into the CI/CD pipeline, ensuring early detection and mitigation of vulnerabilities.
+
+The pipeline aligns with DevSecOps principles by shifting security left and automating security checks.
+
+---
+
+## 9. Future Enhancements
+
+* Enforce Quality Gates (SonarQube)
+* Fail pipeline on vulnerabilities (Trivy, Snyk)
+* Add Infrastructure as Code (Terraform + Checkov)
+* Integrate Slack/Email notifications
+* Automate deployment to AWS
+
+---
