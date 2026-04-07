@@ -8,6 +8,7 @@ jobs:
 devsecops:
 runs-on: self-hosted
 
+```
 steps:
 # ---------------- Checkout ----------------
 - name: Checkout Code
@@ -56,4 +57,4 @@ steps:
     docker run --network="host" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
     -t http://localhost:3000 \
     -r zap-report.html
-
+```
