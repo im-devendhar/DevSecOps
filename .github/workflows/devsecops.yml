@@ -31,9 +31,9 @@ jobs:
 
       # ---------------- SCA ----------------
       - name: Run Snyk Monitor (Dependency Scan)
+        working-directory: devsecops-poc
         run: |
           set -euxo pipefail
-          cd devsecops-poc
           snyk monitor
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
