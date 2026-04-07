@@ -24,7 +24,7 @@ jobs:
       - name: Run SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v2
         with:
-          projectBaseDir: .
+          projectBaseDir: devsecops-poc
         env:
           SONAR_HOST_URL: http://172.31.84.127:9000
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
