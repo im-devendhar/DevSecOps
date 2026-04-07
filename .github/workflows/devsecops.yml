@@ -33,6 +33,7 @@ jobs:
       - name: Run Snyk Monitor (Dependency Scan)
         run: |
           set -euxo pipefail
+          cd devsecops-poc
           snyk monitor
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
