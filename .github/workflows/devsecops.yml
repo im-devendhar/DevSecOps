@@ -29,42 +29,58 @@ jobs:
           SONAR_HOST_URL: http://172.31.84.127:9000
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+      # ---------------- Install Tools ----------------
+      - name: Install Snyk
+        run: npm install -g snyk
+
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install -y trivy
+
       # ---------------- SCA ----------------
-      - name: Run Snyk Monitor (Dependency Scan)
+      - name: Run Snyk Test
         working-directory: devsecops-poc
         run: |
           set -euxo pipefail
-          snyk monitor
+          snyk test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       # ---------------- Secrets Scan ----------------
       - name: Run Gitleaks Scan
         run: |
-          set -euxo pipefail
-          docker run --rm -v $(pwd):/repo zricethezav/gitleaks detect \
+          docker run --rm -v $(pwd):/repo zricethezav/gitleaks:latest detect \
           --source="/repo" --no-git
+
+      # ---------------- Cleanup ----------------
+      - name: Cleanup old containers
+        run: |
+          docker ps -q --filter "ancestor=${APP_NAME}" | xargs -r docker rm -f
+          docker ps -q --filter "publish=3000" | xargs -r docker rm -f
 
       # ---------------- Build ----------------
       - name: Build Docker Image
-        working-directory: devsecops-poc 
+        working-directory: devsecops-poc
         run: |
           set -euxo pipefail
-          docker rm -f devsecops-container || true
-          docker run -d --name devsecops-container -p ${APP_PORT}:80 ${APP_NAME}
+          docker build -t ${APP_NAME}:latest .
 
       # ---------------- Container Scan ----------------
       - name: Run Trivy Scan
-        working-directory: devsecops-poc 
         run: |
           set -euxo pipefail
-          trivy image ${APP_NAME}
+          trivy image --severity HIGH,CRITICAL --exit-code 1 ${APP_NAME}:latest
 
       # ---------------- Run Application ----------------
       - name: Run Application Container
         run: |
           set -euxo pipefail
-          docker run -d -p ${APP_PORT}:80 ${APP_NAME}
+          docker run -d --name devsecops-container -p ${APP_PORT}:80 ${APP_NAME}:latest
 
       # ---------------- Wait ----------------
       - name: Wait for Application to Start
@@ -73,10 +89,10 @@ jobs:
       # ---------------- DAST ----------------
       - name: Run OWASP ZAP Scan
         run: |
-          set -euxo pipefail
           docker run --network="host" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
           -t http://localhost:${APP_PORT} \
-          -r zap-report.html
+          -r zap-report.html \
+          -m 5
 
       # ---------------- Upload Report ----------------
       - name: Upload ZAP Report
