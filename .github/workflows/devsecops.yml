@@ -50,7 +50,8 @@ jobs:
         working-directory: devsecops-poc 
         run: |
           set -euxo pipefail
-          docker build -t ${APP_NAME} .
+          docker rm -f devsecops-container || true
+          docker run -d --name devsecops-container -p ${APP_PORT}:80 ${APP_NAME}
 
       # ---------------- Container Scan ----------------
       - name: Run Trivy Scan
