@@ -81,6 +81,7 @@ jobs:
           docker run --network="host" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
           -t http://localhost:${APP_PORT} \
           -r zap-report.html
+          -I 
 
       # ---------------- Upload Report ----------------
       - name: Upload ZAP Report
