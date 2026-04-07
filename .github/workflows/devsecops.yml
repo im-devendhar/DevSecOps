@@ -47,12 +47,14 @@ jobs:
 
       # ---------------- Build ----------------
       - name: Build Docker Image
+        working-directory: devsecops-poc 
         run: |
           set -euxo pipefail
           docker build -t ${APP_NAME} .
 
       # ---------------- Container Scan ----------------
       - name: Run Trivy Scan
+        working-directory: devsecops-poc 
         run: |
           set -euxo pipefail
           trivy image ${APP_NAME}
