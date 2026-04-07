@@ -1,0 +1,71 @@
+name: DevSecOps Pipeline
+
+on:
+push:
+branches: [ "main" ]
+
+jobs:
+devsecops:
+runs-on: ubuntu-latest
+
+steps:
+# ---------------- Checkout ----------------
+- name: Checkout Code
+  uses: actions/checkout@v3
+
+# ---------------- SAST (SonarQube) ----------------
+- name: SonarQube Scan
+  uses: SonarSource/sonarqube-scan-action@v2
+  with:
+    projectBaseDir: .
+  env:
+    SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+# ---------------- SCA (Snyk - Dashboard Enabled) ----------------
+- name: Snyk Monitor (Dashboard)
+  uses: snyk/actions/node@master
+  with:
+    command: monitor
+  env:
+    SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+# ---------------- Secrets Scan ----------------
+- name: Gitleaks Scan
+  uses: zricethezav/gitleaks-action@v2
+
+# ---------------- Build Docker ----------------
+- name: Build Docker Image
+  run: docker build -t devsecops-app .
+
+# ---------------- Container Scan (Trivy) ----------------
+- name: Trivy Scan
+  uses: aquasecurity/trivy-action@master
+  with:
+    image-ref: devsecops-app
+    format: table
+    severity: HIGH,CRITICAL
+    exit-code: 0   # change to 1 to fail pipeline
+
+# ---------------- Run App ----------------
+- name: Run Container
+  run: docker run -d -p 3000:80 devsecops-app
+
+# ---------------- Wait for App ----------------
+- name: Wait for App to Start
+  run: sleep 15
+
+# ---------------- DAST (OWASP ZAP) ----------------
+- name: OWASP ZAP Scan
+  run: |
+    docker run --network="host" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
+    -t http://localhost:3000 \
+    -r zap-report.html
+
+# ---------------- Upload ZAP Report ----------------
+- name: Upload ZAP Report
+  uses: actions/upload-artifact@v3
+  with:
+    name: zap-report
+    path: zap-report.html
+
