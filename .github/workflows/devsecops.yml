@@ -67,6 +67,7 @@ jobs:
       - name: Run Application Container
         run: |
           set -euxo pipefail
+          docker rm -f devsecops-container || true
           docker run -d --name devsecops-container -p ${APP_PORT}:80 ${APP_NAME}:latest
 
       # ---------------- Wait ----------------
