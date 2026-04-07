@@ -1,82 +1,82 @@
 name: DevSecOps Pipeline with Security Scans
 
 on:
-push:
-branches:
-- main
+  push:
+   branches:
+     - main
 
 env:
-APP_NAME: devsecops-app
-APP_PORT: 3000
+  APP_NAME: devsecops-app
+  APP_PORT: 3000
 
 jobs:
-security-pipeline:
-runs-on: self-hosted
-permissions:
-contents: read
+  security-pipeline:
+    runs-on: self-hosted
+    permissions:
+      contents: read
 
 
-steps:
-  - name: Checkout source code
-    uses: actions/checkout@v4
+      steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
 
-  # ---------------- SAST ----------------
-  - name: Run SonarQube Scan
-    uses: SonarSource/sonarqube-scan-action@v2
-    with:
-      projectBaseDir: .
-    env:
-      SONAR_HOST_URL: http://localhost:9000
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+       # ---------------- SAST ----------------
+      - name: Run SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v2
+        with:
+          projectBaseDir: .
+        env:
+          SONAR_HOST_URL: http://localhost:9000
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   # ---------------- SCA ----------------
-  - name: Run Snyk Monitor (Dependency Scan)
-    run: |
-      set -euxo pipefail
-      snyk monitor
-    env:
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Run Snyk Monitor (Dependency Scan)
+        run: |
+         set -euxo pipefail
+         snyk monitor
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
   # ---------------- Secrets Scan ----------------
-  - name: Run Gitleaks Scan
-    run: |
-      set -euxo pipefail
-      docker run --rm -v $(pwd):/path zricethezav/gitleaks detect \
-      --source="/path" --no-git
+     - name: Run Gitleaks Scan
+       run: |
+         set -euxo pipefail
+         docker run --rm -v $(pwd):/path zricethezav/gitleaks detect \
+         --source="/path" --no-git
 
   # ---------------- Build ----------------
-  - name: Build Docker Image
-    run: |
-      set -euxo pipefail
-      docker build -t ${APP_NAME} .
+     - name: Build Docker Image
+       run: |
+        set -euxo pipefail
+        docker build -t ${APP_NAME} .
 
   # ---------------- Container Scan ----------------
-  - name: Run Trivy Scan
-    run: |
-      set -euxo pipefail
-      trivy image ${APP_NAME}
+     - name: Run Trivy Scan
+       run: |
+        set -euxo pipefail
+        trivy image ${APP_NAME}
 
   # ---------------- Run Application ----------------
-  - name: Run Application Container
-    run: |
-      set -euxo pipefail
-      docker run -d -p ${APP_PORT}:80 ${APP_NAME}
+     - name: Run Application Container
+       run: |
+        set -euxo pipefail
+        docker run -d -p ${APP_PORT}:80 ${APP_NAME}
 
   # ---------------- Wait ----------------
-  - name: Wait for Application to Start
-    run: sleep 15
+     - name: Wait for Application to Start
+       run: sleep 15
 
   # ---------------- DAST ----------------
-  - name: Run OWASP ZAP Scan
-    run: |
-      set -euxo pipefail
-      docker run --network="host" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
-      -t http://localhost:${APP_PORT} \
-      -r zap-report.html
+     - name: Run OWASP ZAP Scan
+       run: |
+        set -euxo pipefail
+        docker run --network="host" ghcr.io/zaproxy/zaproxy:stable zap-baseline.py \
+        -t http://localhost:${APP_PORT} \
+        -r zap-report.html
 
   # ---------------- Upload Report ----------------
-  - name: Upload ZAP Report
-    uses: actions/upload-artifact@v3
-    with:
-      name: zap-report
-      path: zap-report.html
+     - name: Upload ZAP Report
+       uses: actions/upload-artifact@v3
+       with:
+       name: zap-report
+       path: zap-report.html
